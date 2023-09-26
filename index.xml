@@ -4,9 +4,17 @@
     <link>http://example.org/</link>
     <description>jblj&#39;s Blog 陈雅喆的博客</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 26 Sep 2023 00:28:41 &#43;0800</lastBuildDate>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 26 Sep 2023 15:29:18 &#43;0800</lastBuildDate>
       <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>第三篇</title>
+  <link>http://example.org/%E7%AC%AC%E4%B8%89%E7%AF%87/</link>
+  <pubDate>Tue, 26 Sep 2023 15:29:18 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/%E7%AC%AC%E4%B8%89%E7%AF%87/</guid>
+  <description><![CDATA[nihaoya]]></description>
+</item>
+<item>
   <title>Second</title>
   <link>http://example.org/second/</link>
   <pubDate>Tue, 26 Sep 2023 00:28:41 &#43;0800</pubDate>
@@ -20,7 +28,7 @@
   <pubDate>Mon, 20 Feb 2023 20:14:22 &#43;0800</pubDate>
   <author>jblj</author>
   <guid>http://example.org/first_post/</guid>
-  <description><![CDATA[博客（英语：Blog）是一种在线日记型式的个人网站，借由张帖子章、图片或视频来记录生活、抒发情感或分享信息。博客上的文章通常根据张贴时间，以倒序方式由新到旧排列。]]></description>
+  <description><![CDATA[博客（英语：Blog）是一种在线日记型式的个人网站，借由张帖子章、图片或视频来记录生活、抒发情感或分享信息。博客上的文章通常根据张贴时间，以倒序方式由新到旧排列。 博客（英语：Blog）是一种在线日记型式的个人网站，借由张帖子章、图片或视频来记录生活、抒发情感或分享信息。博客上的文章通常根据张贴时间，]]></description>
 </item>
 </channel>
 </rss>

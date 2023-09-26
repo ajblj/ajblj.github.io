@@ -1,2 +1,3 @@
+http://example.org/%E7%AC%AC%E4%B8%89%E7%AF%87/
 http://example.org/second/
 http://example.org/first_post/
