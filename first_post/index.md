@@ -6,6 +6,6 @@
 
 ---
 
-> 作者: xxxx  
+> 作者: [jblj](https://github.com/ajblj/)  
 > URL: http://example.org/first_post/  
 
