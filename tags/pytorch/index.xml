@@ -29,7 +29,7 @@
   <description><![CDATA[线性回归 在机器学习领域中的大多数任务通常都与预测（prediction）有关。 当我们想预测一个数值时，就会涉及到回归问题。 我们希望根据房屋的面积（平方英尺）和房龄（年）来估算房屋价格（美元）。 为了开发一个能预测房价的模型，我们需要收集一个真实的数据集。 这个数据集包括了房屋的销售价格、面积和房龄。 在机]]></description>
 </item>
 <item>
-  <title>2 预备知识</title>
+  <title>2 预备知识1</title>
   <link>http://example.org/2-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/</link>
   <pubDate>Sun, 29 Oct 2023 16:31:22 &#43;0800</pubDate>
   <author>jblj</author>
