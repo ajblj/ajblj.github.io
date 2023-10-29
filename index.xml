@@ -4,31 +4,39 @@
     <link>http://example.org/</link>
     <description>jblj&#39;s Blog 陈雅喆的博客</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 26 Sep 2023 15:29:18 &#43;0800</lastBuildDate>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Sun, 29 Oct 2023 16:34:22 &#43;0800</lastBuildDate>
       <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
-  <title>第三篇</title>
-  <link>http://example.org/%E7%AC%AC%E4%B8%89%E7%AF%87/</link>
-  <pubDate>Tue, 26 Sep 2023 15:29:18 &#43;0800</pubDate>
+  <title>5 深度学习计算</title>
+  <link>http://example.org/5-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%A1%E7%AE%97/</link>
+  <pubDate>Sun, 29 Oct 2023 16:34:22 &#43;0800</pubDate>
   <author>jblj</author>
-  <guid>http://example.org/%E7%AC%AC%E4%B8%89%E7%AF%87/</guid>
-  <description><![CDATA[nihaoya]]></description>
+  <guid>http://example.org/5-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%A1%E7%AE%97/</guid>
+  <description><![CDATA[层和块 事实证明，研究讨论“比单个层大”但“比整个模型小”的组件更有价值，由此引入了神经网络块的概念。块（block）可以描述单个层、由多个层组成的组件或整个模型本身。使用块进行抽象的一个好处是可以将一些块组合成更大的组件，这一过程通常是递归的，如下图所示。 通过定义代码来按需生成任意复杂度的块，可以通]]></description>
 </item>
 <item>
-  <title>Second</title>
-  <link>http://example.org/second/</link>
-  <pubDate>Tue, 26 Sep 2023 00:28:41 &#43;0800</pubDate>
+  <title>4 多层感知机</title>
+  <link>http://example.org/4-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</link>
+  <pubDate>Sun, 29 Oct 2023 16:33:22 &#43;0800</pubDate>
   <author>jblj</author>
-  <guid>http://example.org/second/</guid>
-  <description><![CDATA[1111]]></description>
+  <guid>http://example.org/4-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</guid>
+  <description><![CDATA[多层感知机 隐藏层 如果我们的标签通过仿射变换后确实与我们的输入数据相关，那么这种方法确实足够了。 但是，仿射变换中的线性是一个很强的假设。线性意味着单调假设： 任何特征的增大都会导致模型输出的增大（如果对应的权重为正）， 或者导致模型输出的减小（如果对应的权重为负）。对线性模型的依赖对应于一个隐含的假设， 即]]></description>
 </item>
 <item>
-  <title>我的第一篇文章</title>
-  <link>http://example.org/first_post/</link>
-  <pubDate>Mon, 20 Feb 2023 20:14:22 &#43;0800</pubDate>
+  <title>3 线性神经网络</title>
+  <link>http://example.org/3-%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+  <pubDate>Sun, 29 Oct 2023 16:32:22 &#43;0800</pubDate>
   <author>jblj</author>
-  <guid>http://example.org/first_post/</guid>
-  <description><![CDATA[博客（英语：Blog）是一种在线日记型式的个人网站，借由张帖子章、图片或视频来记录生活、抒发情感或分享信息。博客上的文章通常根据张贴时间，以倒序方式由新到旧排列。 博客（英语：Blog）是一种在线日记型式的个人网站，借由张帖子章、图片或视频来记录生活、抒发情感或分享信息。博客上的文章通常根据张贴时间，]]></description>
+  <guid>http://example.org/3-%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+  <description><![CDATA[线性回归 在机器学习领域中的大多数任务通常都与预测（prediction）有关。 当我们想预测一个数值时，就会涉及到回归问题。 我们希望根据房屋的面积（平方英尺）和房龄（年）来估算房屋价格（美元）。 为了开发一个能预测房价的模型，我们需要收集一个真实的数据集。 这个数据集包括了房屋的销售价格、面积和房龄。 在机]]></description>
+</item>
+<item>
+  <title>2 预备知识</title>
+  <link>http://example.org/2-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/</link>
+  <pubDate>Sun, 29 Oct 2023 16:31:22 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/2-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/</guid>
+  <description><![CDATA[数据操作 访问元素，子区间访问为开区间，如 1: 3 的含义是[1, 3)左闭右开，:: 3 的含义是从头到尾跳 3 个访问 使用 arange 创建一个行向量 x 1 2 x = torch.arange(12) output: tensor([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) 可以通过张量的 shape 属性来访问张量（沿每个轴的长度）的形状 1 2 x.shape output: torch.Size([12]) 如果只想知道张量中元素的总数，即形状的所有元素乘积，可以检查它的大小（s]]></description>
 </item>
 </channel>
 </rss>
