@@ -5,7 +5,7 @@
 
 访问元素，子区间访问为开区间，如 ***1: 3*** 的含义是[1, 3)左闭右开，***:: 3*** 的含义是从头到尾跳 3 个访问
 
-<img src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231009112555278.png" alt="image1" style="zoom:50%;" />
+![Figure 1-1 数据操作](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231009112555278.png)
 
 使用 `arange` 创建一个行向量 `x`
 
@@ -275,7 +275,7 @@ output:(tensor([[3., 1., 0.],
 
 ### 标量
 
-<img src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231010105731009.png" alt="image-20231010105731009" style="zoom: 33%;" />
+![Figure 3-1 标量](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231010105731009.png)
 
 标量由只有一个元素的张量表示
 
