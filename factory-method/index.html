@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>Factory Method设计模式 - jblj&#39;s Blog</title><meta name="author" content="jblj">
+<meta name="author-link" content="https://github.com/ajblj/">
+<meta name="description" content="改写本例，用于添加另一个具体工厂和具体产品。 工厂方法模式结构 Figure 1-1 工厂模式方法类图 具体类图 Figure 1-2 类图 抽象工厂和抽象产品 抽象工厂：Factory 是产生Product的抽象类，具体内容由ConcreteFactory决定。Factory对于实际产生的ConcreteProduct一无所知，唯一知道的就是调用" /><meta name="keywords" content='设计模式, Java' /><meta itemprop="name" content="Factory Method设计模式">
+<meta itemprop="description" content="改写本例，用于添加另一个具体工厂和具体产品。 工厂方法模式结构 Figure 1-1 工厂模式方法类图 具体类图 Figure 1-2 类图 抽象工厂和抽象产品 抽象工厂：Factory 是产生Product的抽象类，具体内容由ConcreteFactory决定。Factory对于实际产生的ConcreteProduct一无所知，唯一知道的就是调用"><meta itemprop="datePublished" content="2023-10-31T15:45:00+08:00" />
+<meta itemprop="dateModified" content="2023-10-31T15:45:00+08:00" />
+<meta itemprop="wordCount" content="2168"><meta itemprop="image" content="http://example.org/logo.png"/>
+<meta itemprop="keywords" content="设计模式,Java," /><meta property="og:title" content="Factory Method设计模式" />
+<meta property="og:description" content="改写本例，用于添加另一个具体工厂和具体产品。 工厂方法模式结构 Figure 1-1 工厂模式方法类图 具体类图 Figure 1-2 类图 抽象工厂和抽象产品 抽象工厂：Factory 是产生Product的抽象类，具体内容由ConcreteFactory决定。Factory对于实际产生的ConcreteProduct一无所知，唯一知道的就是调用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/factory-method/" /><meta property="og:image" content="http://example.org/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-31T15:45:00+08:00" />
+<meta property="article:modified_time" content="2023-10-31T15:45:00+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/logo.png"/>
+
+<meta name="twitter:title" content="Factory Method设计模式"/>
+<meta name="twitter:description" content="改写本例，用于添加另一个具体工厂和具体产品。 工厂方法模式结构 Figure 1-1 工厂模式方法类图 具体类图 Figure 1-2 类图 抽象工厂和抽象产品 抽象工厂：Factory 是产生Product的抽象类，具体内容由ConcreteFactory决定。Factory对于实际产生的ConcreteProduct一无所知，唯一知道的就是调用"/>
+<meta name="application-name" content="jblj">
+<meta name="apple-mobile-web-app-title" content="jblj"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/factory-method/" /><link rel="prev" href="http://example.org/iterator/" /><link rel="next" href="http://example.org/prototype/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Factory Method设计模式",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/factory-method\/"
+    },"genre": "posts","keywords": "设计模式, Java","wordcount":  2168 ,
+    "url": "http:\/\/example.org\/factory-method\/","datePublished": "2023-10-31T15:45:00+08:00","dateModified": "2023-10-31T15:45:00+08:00","publisher": {
+      "@type": "Organization",
+      "name": "jblj","logo": "http:\/\/example.org\/images\/avatar.png"},"author": {
+        "@type": "Person",
+        "name": "jblj"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="jblj&#39;s Blog"><img loading="lazy" src="/logo.png" srcset="/logo.png, /logo.png 1.5x, /logo.png 2x" sizes="auto" data-title="jblj&#39;s Blog" data-alt="jblj&#39;s Blog" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Out Of Comfort Zone</span></a><span id="typeit-header-subtitle-desktop" class="typeit header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="jblj&#39;s Blog"><img loading="lazy" src="/logo.png" srcset="/logo.png, /logo.png 1.5x, /logo.png 2x" sizes="auto" data-title="/logo.png" data-alt="/logo.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Out Of Comfort Zone</span></a><span id="typeit-header-subtitle-mobile" class="typeit header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Factory Method设计模式</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ajblj/" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="jblj" data-alt="jblj" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;jblj</a></span>
+          <span class="post-category">收录于 <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 软件设计模式</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-10-31 15:45:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-31">2023-10-31</time></span>&nbsp;<span title="更新于 2023-10-31 15:45:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-31">2023-10-31</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2168 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 5 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#改写本例用于添加另一个具体工厂和具体产品">改写本例，用于添加另一个具体工厂和具体产品。</a>
+      <ul>
+        <li><a href="#工厂方法模式结构">工厂方法模式结构</a></li>
+        <li><a href="#具体类图">具体类图</a></li>
+        <li><a href="#抽象工厂和抽象产品">抽象工厂和抽象产品</a></li>
+        <li><a href="#具体工厂">具体工厂</a></li>
+        <li><a href="#具体产品">具体产品</a></li>
+        <li><a href="#结果显示">结果显示</a></li>
+      </ul>
+    </li>
+    <li><a href="#请举例说明其他的工厂模式的应用">请举例说明其他的工厂模式的应用。</a>
+      <ul>
+        <li><a href="#简单工厂模式">简单工厂模式</a>
+          <ul>
+            <li><a href="#简单工厂模式结构">简单工厂模式结构</a></li>
+            <li><a href="#简单工厂模式实现">简单工厂模式实现</a></li>
+            <li><a href="#简单工厂模式应用">简单工厂模式应用</a></li>
+          </ul>
+        </li>
+        <li><a href="#抽象工厂模式">抽象工厂模式</a>
+          <ul>
+            <li><a href="#抽象工厂模式结构">抽象工厂模式结构</a></li>
+            <li><a href="#抽象工厂模式实现">抽象工厂模式实现</a></li>
+            <li><a href="#抽象工厂模式应用">抽象工厂模式应用</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content" data-end-flag="End"><h2 id="改写本例用于添加另一个具体工厂和具体产品">改写本例，用于添加另一个具体工厂和具体产品。</h2>
+<h3 id="工厂方法模式结构">工厂方法模式结构</h3>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png" data-sub-html="<h2> </h2><p>Figure 1-1 工厂模式方法类图</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png 2x" sizes="auto" data-title="Figure 1-1 工厂模式方法类图" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9B%BE_HI8K47rsPc.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-1 工厂模式方法类图</figcaption>
+    </figure></p>
+<h3 id="具体类图">具体类图</h3>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png" data-sub-html="<h2> </h2><p>Figure 1-2 类图</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png 2x" sizes="auto" data-title="Figure 1-2 类图" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_c6dTCFLFdG.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-2 类图</figcaption>
+    </figure></p>
+<h3 id="抽象工厂和抽象产品">抽象工厂和抽象产品</h3>
+<ul>
+<li>抽象工厂：Factory 是产生Product的抽象类，具体内容由ConcreteFactory决定。Factory对于实际产生的ConcreteProduct一无所知，唯一知道的就是调用Product和产生新对象的方法。该类描述的是框架。</li>
+</ul>
+<div class="highlight" id="id-1"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">framework</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Factory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">Product</span> <span class="nf">create</span><span class="o">(</span><span class="n">String</span> <span class="n">owner</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Product</span> <span class="n">p</span> <span class="o">=</span> <span class="n">createProduct</span><span class="o">(</span><span class="n">owner</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">registerProduct</span><span class="o">(</span><span class="n">p</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">p</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">Product</span> <span class="nf">createProduct</span><span class="o">(</span><span class="n">String</span> <span class="n">owner</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">registerProduct</span><span class="o">(</span><span class="n">Product</span> <span class="n">Product</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>抽象产品：规定了此Pattern所产生的对象实例应有的接口，具体内容则由子类ConcreteProduct参与者决定，该类描述的是框架。</li>
+</ul>
+<div class="highlight" id="id-2"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">framework</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">use</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="具体工厂">具体工厂</h3>
+<p>实际处理内容的部分，这里是一个创建账户的工厂。</p>
+<div class="highlight" id="id-3"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">account</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.util.Vector</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">framework.*</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AccountFactory</span> <span class="kd">extends</span> <span class="n">Factory</span><span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="n">Product</span> <span class="nf">createProduct</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Account</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">registerProduct</span><span class="o">(</span><span class="n">Product</span> <span class="n">product</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">names</span><span class="o">.</span><span class="na">add</span><span class="o">(((</span><span class="n">Account</span><span class="o">)</span><span class="n">product</span><span class="o">).</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getNames</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">names</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="具体产品">具体产品</h3>
+<p>实际处理内容的部分，定义了工厂创建的账户。</p>
+<div class="highlight" id="id-4"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nn">account</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">framework.*</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Account</span> <span class="kd">extends</span> <span class="n">Product</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Account</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;创建&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34;的账户。&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">use</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;登录&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34;的账户。&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">(){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="结果显示">结果显示</h3>
+<ul>
+<li>测试代码</li>
+</ul>
+<div class="highlight" id="id-5"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">account.AccountFactory</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">framework.*</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Factory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AccountFactory</span><span class="o">();</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">Product</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&#34;张三&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Product</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&#34;李四&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Product</span> <span class="n">p3</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&#34;王五&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p1</span><span class="o">.</span><span class="na">use</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p2</span><span class="o">.</span><span class="na">use</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p3</span><span class="o">.</span><span class="na">use</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>测试结果</li>
+</ul>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png" data-sub-html="<h2> </h2><p>Figure 1-3</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png 2x" sizes="auto" data-title="Figure 1-3" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_QzH2AhooZY.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-3</figcaption>
+    </figure></p>
+<h2 id="请举例说明其他的工厂模式的应用">请举例说明其他的工厂模式的应用。</h2>
+<h3 id="简单工厂模式">简单工厂模式</h3>
+<h4 id="简单工厂模式结构">简单工厂模式结构</h4>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png" data-sub-html="<h2> </h2><p>Figure 2-1 简单工厂类图</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png 2x" sizes="auto" data-title="Figure 2-1 简单工厂类图" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E7%B1%BB%E5%9B%BE_zSeBgI6Ped.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 2-1 简单工厂类图</figcaption>
+    </figure></p>
+<p>其中根据上图可知，简单工厂模式包含以下3个角色:</p>
+<ul>
+<li>Factory（工厂角色）：即工厂类，它是简单工厂模式的核心，负责实现创建所有产品实例的内部逻辑；其可以被外界直接调用，创建所需的产品对象。</li>
+<li>AbstractProduct（抽象产品角色）：它是工厂类创建的所有对象的父类，封装了各种产品对象的共有方法。</li>
+<li>Product（具体产品角色）：它是简单工厂模式的创建目标，所有被创建的对象都充当这个角色的某个具体类的实例。</li>
+</ul>
+<h4 id="简单工厂模式实现">简单工厂模式实现</h4>
+<p>三种角色的典型代码如下：</p>
+<ul>
+<li>Factory</li>
+</ul>
+<div class="highlight" id="id-6"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Factory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 静态工厂方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">AbstractProduct</span> <span class="nf">createProduct</span><span class="o">(</span><span class="n">String</span> <span class="n">arg</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">AbstractProduct</span> <span class="n">product</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">arg</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&#34;1&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">product</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product1</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">arg</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&#34;2&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">product</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product2</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">product</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>AbstractProduct</li>
+</ul>
+<div class="highlight" id="id-7"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractProduct</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 所有产品类的公共业务方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">methodSame</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 公有方法的实现
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 声明抽象业务方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">methodDiff</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Product</li>
+</ul>
+<div class="highlight" id="id-8"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product1</span> <span class="kd">extends</span> <span class="n">AbstractProduct</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 实现业务方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">methodDiff</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 业务方法的实现
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="简单工厂模式应用">简单工厂模式应用</h4>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png" data-sub-html="<h2> </h2><p>Figure 2-2 简单工厂应用</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png 2x" sizes="auto" data-title="Figure 2-2 简单工厂应用" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82_F5zsBiLBol.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 2-2 简单工厂应用</figcaption>
+    </figure></p>
+<ul>
+<li>具体产品Circle、Rectangle、Triangle</li>
+</ul>
+<div class="highlight" id="id-9"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Circle</span> <span class="kd">extends</span> <span class="n">Shape</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;绘制圆形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">erase</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;擦除圆形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Rectangle</span> <span class="kd">extends</span> <span class="n">Shape</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;绘制长方形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">erase</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;擦除长方形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Triangle</span> <span class="kd">extends</span> <span class="n">Shape</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;绘制三角形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">erase</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;擦除三角形&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>抽象产品Shape</li>
+</ul>
+<div class="highlight" id="id-10"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Shape</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 绘制图形
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 擦除图形
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">erase</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>简单工厂ShapeFactory</li>
+</ul>
+<div class="highlight" id="id-11"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeFactory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Shape</span> <span class="nf">createShape</span><span class="o">(</span><span class="n">String</span> <span class="n">type</span><span class="o">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Shape</span> <span class="n">shape</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&#34;Circle&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Circle</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&#34;Rectangle&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rectangle</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&#34;Triangle&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Triangle</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">shape</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="抽象工厂模式">抽象工厂模式</h3>
+<h4 id="抽象工厂模式结构">抽象工厂模式结构</h4>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png" data-sub-html="<h2> </h2><p>Figure 2-3 抽象工厂模式类图</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png 2x" sizes="auto" data-title="Figure 2-3 抽象工厂模式类图" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE_HeohoZ020B.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 2-3 抽象工厂模式类图</figcaption>
+    </figure></p>
+<p>由上图可知，抽象工厂模式包含以下四个角色：</p>
+<ul>
+<li>AbstractProduct（抽象产品）：它为每种产品声明接口，在抽象产品中声明了产品所具有的业务方法。</li>
+<li>Product1（具体产品）：它定义具体工厂生产的具体产品的具体产品对象，实现抽象产品接口中声明的业务方法。</li>
+<li>AbstractFactory（抽象工厂）：它声明了一组用于创建一族产品的方法，每一个方法对应一种产品。</li>
+<li>ConcreteFactory1（具体工厂）：它实现了在抽象工厂中声明的创建产品的方法，生成一组具体产品，这些产品构成了一个产品族，每一个产品都位于某个产品等级结构中。</li>
+</ul>
+<h4 id="抽象工厂模式实现">抽象工厂模式实现</h4>
+<p>抽象工厂的典型代码如下：</p>
+<ul>
+<li>AbstractFactory</li>
+</ul>
+<div class="highlight" id="id-12"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AbstractFactory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">AbstractProduct1</span> <span class="nf">createProduct1</span><span class="o">();</span> <span class="c1">// 工厂方法一
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">AbstractProduct2</span> <span class="nf">createProduct2</span><span class="o">();</span> <span class="c1">// 工厂方法二
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>ConcreteFactory1</li>
+</ul>
+<div class="highlight" id="id-13"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConcreteFactory1</span> <span class="kd">implements</span> <span class="n">AbstractFactory</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 工厂方法一
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">AbstractProduct1</span> <span class="nf">createProduct1</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Product1</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 工厂方法二
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">AbstractProduct2</span> <span class="nf">createProduct2</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Product2</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="抽象工厂模式应用">抽象工厂模式应用</h4>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png" data-sub-html="<h2> </h2><p>Figure 2-4 抽象工厂应用</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png 2x" sizes="auto" data-title="Figure 2-4 抽象工厂应用" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82_P3BrCFJW_c.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 2-4 抽象工厂应用</figcaption>
+    </figure></p>
+<p>其中，接口AbstractFactory充当抽象工厂，其子类WindowsFactory、UnixFactory和LinuxFactory充当具体工厂；Text和Button充当抽象产品，其子类WindowsText、UnixText、LinuxText和WindowsButton、UnixButton、LinuxButton充当具体产品。</p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-10-31 15:45:00">更新于 2023-10-31&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/factory-method/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式" data-hashtags="设计模式,Java"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/factory-method/" data-hashtag="设计模式"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 百度" data-sharer="baidu" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式"><i data-svg-src="/lib/simple-icons/icons/baidu.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="http://example.org/factory-method/" data-title="Factory Method设计模式"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/' class="post-tag">设计模式</a><a href='/tags/java/' class="post-tag">Java</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/iterator/" class="post-nav-item" rel="prev" title="Iterator设计模式"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Iterator设计模式</a>
+      <a href="/prototype/" class="post-nav-item" rel="next" title="Prototype设计模式">Prototype设计模式<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.118.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.18"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ajblj/"target="_blank" rel="external nofollow noopener noreferrer">jblj</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics order-first"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="ms-1 d-none">博客已运行</span><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;--bg-progress: #000;--bg-progress-dark: #fff;"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/instant-page/instantpage.min.js" async defer type="module"></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/typeit/index.umd.js" defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"autoBookmark":true,"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":30},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"data":{"typeit-header-subtitle-desktop":"陈雅喆的博客","typeit-header-subtitle-mobile":"陈雅喆的博客"},"enablePWA":true,"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"},"siteTime":"2023-09-25T20:01:01+08:00","twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"typeit-header-subtitle-desktop":["typeit-header-subtitle-desktop"],"typeit-header-subtitle-mobile":["typeit-header-subtitle-mobile"]},"duration":-1,"loop":false,"speed":100}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

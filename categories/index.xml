@@ -4,7 +4,15 @@
     <link>http://example.org/categories/</link>
     <description>Categories - 分类 - jblj&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/categories/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/categories/" rel="self" type="application/rss+xml" /><item>
+  <title>软件设计模式</title>
+  <link>http://example.org/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+  <pubDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>动手学深度学习</title>
   <link>http://example.org/categories/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
   <pubDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</pubDate>

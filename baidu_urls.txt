@@ -1,3 +1,10 @@
+http://example.org/bridge/
+http://example.org/builder/
+http://example.org/abstract-factory/
+http://example.org/prototype/
+http://example.org/factory-method/
+http://example.org/iterator/
+http://example.org/adaptor/
 http://example.org/6-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/
 http://example.org/5-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%A1%E7%AE%97/
 http://example.org/4-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/

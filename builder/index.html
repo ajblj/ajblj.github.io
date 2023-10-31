@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>Builder设计模式 - jblj&#39;s Blog</title><meta name="author" content="jblj">
+<meta name="author-link" content="https://github.com/ajblj/">
+<meta name="description" content="修改本例，增加一个新的concrete的Builder。 Builder 模式结构 建造者模式的UML类图如下： Figure 1-1 Builder类图 由上图可知，建造者模式包含以下四个角色： Builder（抽象建造者）：它为创建一个产品对象的各个部件指定抽象接口，在该接口中一般声明两类方法，一类方法是buildPartX()，它们用" /><meta name="keywords" content='设计模式, Java' /><meta itemprop="name" content="Builder设计模式">
+<meta itemprop="description" content="修改本例，增加一个新的concrete的Builder。 Builder 模式结构 建造者模式的UML类图如下： Figure 1-1 Builder类图 由上图可知，建造者模式包含以下四个角色： Builder（抽象建造者）：它为创建一个产品对象的各个部件指定抽象接口，在该接口中一般声明两类方法，一类方法是buildPartX()，它们用"><meta itemprop="datePublished" content="2023-10-31T16:16:00+08:00" />
+<meta itemprop="dateModified" content="2023-10-31T16:16:00+08:00" />
+<meta itemprop="wordCount" content="1195"><meta itemprop="image" content="http://example.org/logo.png"/>
+<meta itemprop="keywords" content="设计模式,Java," /><meta property="og:title" content="Builder设计模式" />
+<meta property="og:description" content="修改本例，增加一个新的concrete的Builder。 Builder 模式结构 建造者模式的UML类图如下： Figure 1-1 Builder类图 由上图可知，建造者模式包含以下四个角色： Builder（抽象建造者）：它为创建一个产品对象的各个部件指定抽象接口，在该接口中一般声明两类方法，一类方法是buildPartX()，它们用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/builder/" /><meta property="og:image" content="http://example.org/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-31T16:16:00+08:00" />
+<meta property="article:modified_time" content="2023-10-31T16:16:00+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/logo.png"/>
+
+<meta name="twitter:title" content="Builder设计模式"/>
+<meta name="twitter:description" content="修改本例，增加一个新的concrete的Builder。 Builder 模式结构 建造者模式的UML类图如下： Figure 1-1 Builder类图 由上图可知，建造者模式包含以下四个角色： Builder（抽象建造者）：它为创建一个产品对象的各个部件指定抽象接口，在该接口中一般声明两类方法，一类方法是buildPartX()，它们用"/>
+<meta name="application-name" content="jblj">
+<meta name="apple-mobile-web-app-title" content="jblj"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/builder/" /><link rel="prev" href="http://example.org/abstract-factory/" /><link rel="next" href="http://example.org/bridge/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Builder设计模式",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/builder\/"
+    },"genre": "posts","keywords": "设计模式, Java","wordcount":  1195 ,
+    "url": "http:\/\/example.org\/builder\/","datePublished": "2023-10-31T16:16:00+08:00","dateModified": "2023-10-31T16:16:00+08:00","publisher": {
+      "@type": "Organization",
+      "name": "jblj","logo": "http:\/\/example.org\/images\/avatar.png"},"author": {
+        "@type": "Person",
+        "name": "jblj"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="jblj&#39;s Blog"><img loading="lazy" src="/logo.png" srcset="/logo.png, /logo.png 1.5x, /logo.png 2x" sizes="auto" data-title="jblj&#39;s Blog" data-alt="jblj&#39;s Blog" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Out Of Comfort Zone</span></a><span id="typeit-header-subtitle-desktop" class="typeit header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="jblj&#39;s Blog"><img loading="lazy" src="/logo.png" srcset="/logo.png, /logo.png 1.5x, /logo.png 2x" sizes="auto" data-title="/logo.png" data-alt="/logo.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Out Of Comfort Zone</span></a><span id="typeit-header-subtitle-mobile" class="typeit header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Builder设计模式</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ajblj/" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="jblj" data-alt="jblj" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;jblj</a></span>
+          <span class="post-category">收录于 <a href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 软件设计模式</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-10-31 16:16:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-31">2023-10-31</time></span>&nbsp;<span title="更新于 2023-10-31 16:16:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-31">2023-10-31</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1195 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 3 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#修改本例增加一个新的concrete的builder">修改本例，增加一个新的concrete的Builder。</a>
+      <ul>
+        <li><a href="#builder-模式结构">Builder 模式结构</a></li>
+        <li><a href="#builder-模式实现">Builder 模式实现</a></li>
+        <li><a href="#增加一个新的concretebuilder">增加一个新的ConcreteBuilder</a>
+          <ul>
+            <li><a href="#jsonbuilder类">JsonBuilder类</a></li>
+            <li><a href="#测试类">测试类</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content" data-end-flag="End"><h2 id="修改本例增加一个新的concrete的builder">修改本例，增加一个新的concrete的Builder。</h2>
+<h3 id="builder-模式结构">Builder 模式结构</h3>
+<p>建造者模式的UML类图如下：</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png" data-sub-html="<h2> </h2><p>Figure 1-1 Builder类图</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png 2x" sizes="auto" data-title="Figure 1-1 Builder类图" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/%E7%B1%BB%E5%9B%BE_BDgVJkv0EU.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-1 Builder类图</figcaption>
+    </figure></p>
+<p>由上图可知，建造者模式包含以下四个角色：</p>
+<ul>
+<li>Builder（抽象建造者）：它为创建一个产品对象的各个部件指定抽象接口，在该接口中一般声明两类方法，一类方法是buildPartX()，它们用于创建复杂对象的各个部件；另一类方法是getResult()，它们用于返回复杂对象。Builder既可以是抽象类，也可以是接口。</li>
+<li>ConcreteBuilder（具体建造者）：它实现了Builder接口，实现各个部件的具体构造和装配方法，定义并明确所创建的复杂对象，还可以提供一个方法返回创建好的复杂产品对象（该方法也可以由抽象建造者实现）。</li>
+<li>Product（产品）：它是被构建的复杂对象，包含多个组成部件，具体建造者创建该产品的内部表示并定义它的装配过程。</li>
+<li>Director（指挥者）：指挥者又称为导演类，它负责安排复杂对象的建造次序，指挥者与抽象建造者之间存在关联关系，可以在其construct()建造方法中调用建造者对象的部件构造与装配方法，完成复杂对象的建造。</li>
+</ul>
+<h3 id="builder-模式实现">Builder 模式实现</h3>
+<p>Builder模式的典型代码如下：</p>
+<ul>
+<li>Product</li>
+</ul>
+<div class="highlight" id="id-1"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">partA</span><span class="o">;</span> <span class="c1">// 定义部件，部件可以是值类型和引用类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">partB</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">partC</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 属性的Getter和Setter方法省略
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Builder</li>
+</ul>
+<div class="highlight" id="id-2"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Builder</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建产品对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">protected</span> <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">buildPartA</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">buildPartB</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">buildPartC</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 返回产品对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">Product</span> <span class="nf">getResult</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">product</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>ConcreteBuilder</li>
+</ul>
+<div class="highlight" id="id-3"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConcreteBuilder1</span> <span class="kd">extends</span> <span class="n">Builder</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">buildPartA</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">product</span><span class="o">.</span><span class="na">setPartA</span><span class="o">(</span><span class="s">&#34;A1&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">buildPartB</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">product</span><span class="o">.</span><span class="na">setPartA</span><span class="o">(</span><span class="s">&#34;B1&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">buildPartC</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">product</span><span class="o">.</span><span class="na">setPartA</span><span class="o">(</span><span class="s">&#34;C1&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Director</li>
+</ul>
+<div class="highlight" id="id-4"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Director</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Builder</span> <span class="n">builder</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">Director</span><span class="o">(</span><span class="n">Builder</span> <span class="n">builder</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBuilder</span><span class="o">(</span><span class="n">Builder</span> <span class="n">builder</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 产品的构建与组装方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="n">Product</span> <span class="nf">construct</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">builder</span><span class="o">.</span><span class="na">buildPartA</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">builder</span><span class="o">.</span><span class="na">buildPartB</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">builder</span><span class="o">.</span><span class="na">buildPartC</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">getResult</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="增加一个新的concretebuilder">增加一个新的ConcreteBuilder</h3>
+<h4 id="jsonbuilder类">JsonBuilder类</h4>
+<p>增加一个JsonBuilder的具体建造者，它可以产生一个json格式的文件，其中title设置对象的名称，str设置列表的名称，items设置列表中的内容。</p>
+<div class="highlight" id="id-5"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JsonBuilder</span> <span class="kd">extends</span> <span class="n">Builder</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">StringBuffer</span> <span class="n">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>  <span class="c1">// 开始在此属性建立文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">makeTitle</span><span class="o">(</span><span class="n">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>    <span class="c1">// 一般文字格式的标题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\&#34;&#34;</span> <span class="o">+</span> <span class="n">title</span> <span class="o">+</span> <span class="s">&#34;\&#34;:\n{\n&#34;</span><span class="o">);</span> <span class="c1">//对象的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">makeString</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>    <span class="c1">// 一般文字格式的字串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\t\&#34;&#34;</span> <span class="o">+</span> <span class="n">str</span> <span class="o">+</span> <span class="s">&#34;\&#34;: [&#34;</span><span class="o">);</span> <span class="c1">//列表的名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">makeItems</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">items</span><span class="o">)</span> <span class="o">{</span>    <span class="c1">// 一般文字格式的项目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span><span class="c1">//列表内容
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\&#34;&#34;</span> <span class="o">+</span> <span class="n">items</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">&#34;\&#34;, &#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;\&#34;&#34;</span> <span class="o">+</span> <span class="n">items</span><span class="o">[</span><span class="n">items</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">]</span> <span class="o">+</span> <span class="s">&#34;\&#34;&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;]\n&#34;</span><span class="o">);</span>        <span class="c1">// 空行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">getResult</span><span class="o">()</span> <span class="o">{</span>        <span class="c1">// 完成的文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">buffer</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;}\n&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">buffer</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>    <span class="c1">// 把StringBuffer转换成String
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="测试类">测试类</h4>
+<p>修改Main测试类，增加Json选项：</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png" data-sub-html="<h2> </h2><p>Figure 1-2</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png 2x" sizes="auto" data-title="Figure 1-2" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_eD2-GDozDZ.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-2</figcaption>
+    </figure></p>
+<p>运行结果：</p>
+<p>其中Title为&quot;Creeting&quot;在json中被设置为对象名，String为&quot;从早上到白天结束&quot;在json中被设置为列表名，Items为&quot;早安。&quot;,&ldquo;午安。&ldquo;在json中被设置为列表内容。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png" data-sub-html="<h2> </h2><p>Figure 1-3</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png 2x" sizes="auto" data-title="Figure 1-3" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image_lDFPZ7oD3V.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 1-3</figcaption>
+    </figure></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-10-31 16:16:00">更新于 2023-10-31&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/builder/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/builder/" data-title="Builder设计模式" data-hashtags="设计模式,Java"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/builder/" data-hashtag="设计模式"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://example.org/builder/" data-title="Builder设计模式" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://example.org/builder/" data-title="Builder设计模式"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/builder/" data-title="Builder设计模式"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="http://example.org/builder/" data-title="Builder设计模式" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="http://example.org/builder/" data-title="Builder设计模式" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 百度" data-sharer="baidu" data-url="http://example.org/builder/" data-title="Builder设计模式"><i data-svg-src="/lib/simple-icons/icons/baidu.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="http://example.org/builder/" data-title="Builder设计模式"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/' class="post-tag">设计模式</a><a href='/tags/java/' class="post-tag">Java</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/abstract-factory/" class="post-nav-item" rel="prev" title="Abstract Factory设计模式"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Abstract Factory设计模式</a>
+      <a href="/bridge/" class="post-nav-item" rel="next" title="Bridge设计模式">Bridge设计模式<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.118.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.18"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ajblj/"target="_blank" rel="external nofollow noopener noreferrer">jblj</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics order-first"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="ms-1 d-none">博客已运行</span><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;--bg-progress: #000;--bg-progress-dark: #fff;"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/instant-page/instantpage.min.js" async defer type="module"></script><script src="/lib/twemoji/twemoji.min.js" defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/typeit/index.umd.js" defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"autoBookmark":true,"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":30},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"data":{"typeit-header-subtitle-desktop":"陈雅喆的博客","typeit-header-subtitle-mobile":"陈雅喆的博客"},"enablePWA":true,"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"},"siteTime":"2023-09-25T20:01:01+08:00","twemoji":true,"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"typeit-header-subtitle-desktop":["typeit-header-subtitle-desktop"],"typeit-header-subtitle-mobile":["typeit-header-subtitle-mobile"]},"duration":-1,"loop":false,"speed":100}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>
