@@ -431,7 +431,296 @@ Y2 = corr2d_multi_in_out(X, K)
 assert float(torch.abs(Y1 - Y2).sum()) < 1e-6
 ```
 
+## 池化层
 
+通常处理图像时，我们希望逐渐降低隐藏表示的空间分辨率、聚集信息，这样随着神经网络中层叠的上升，每个神经元对其敏感的感受野（输入）就越大。而机器学习任务通常会跟全局图像的问题有关（例如，“图像是否包含一只猫呢？”），所以最后一层的神经元应该对整个输入全局敏感。通过逐渐聚合信息，生成越来越粗糙的映射，最终实现学习全局表示的目标，同时将卷积图层的所有优势保留在中间层。
+
+此外，当检测较底层的特征时（例如之前所讨论的边缘），我们通常希望这些特征保持某种程度上的平移不变性。例如，如果我们拍摄黑白之间轮廓清晰的图像`X`，并将整个图像向右移动一个像素，即`Z[i, j] = X[i, j + 1]`，则新图像`Z`的输出可能大不相同。而在现实中，随着拍摄角度的移动，任何物体几乎不可能发生在同一像素上。即使用三脚架拍摄一个静止的物体，由于快门的移动而引起的相机振动，可能会使所有物体左右移动一个像素。
+
+下面将介绍**池化**（pooling）层，它具有双重目的：降低卷积层对位置的敏感性，同时降低对空间降采样表示的敏感性。
+
+### 最大池化层和平均池化层
+
+与卷积层类似，池化层运算符由一个固定形状的窗口组成，该窗口根据其步幅大小在输入的所有区域上滑动，为固定形状窗口（有时称为**池化窗口**）遍历的每个位置计算一个输出。然而，不同于卷积层中的输入与卷积核之间的互相关计算，池化层不包含参数。相反，池运算是确定性的，我们通常计算池化窗口中所有元素的最大值或平均值。这些操作分别称为**最大池化**（maximum pooling）和**平均池化**（average pooling）。
+
+在这两种情况下，与互相关运算符一样，池化窗口从输入张量的左上角开始，从左往右、从上往下的在输入张量内滑动。在池化窗口到达的每个位置，它计算该窗口中输入子张量的最大值或平均值。计算最大值或平均值是取决于使用了最大池化层还是平均池化层。
+
+![Figure5-1 最大池化层](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/pooling.svg)
+
+上图中输出张量的高度为$2$，宽度为$2$。这四个元素为每个池化窗口中的最大值：
+$$
+\max(0, 1, 3, 4)=4,\\\
+\max(1, 2, 4, 5)=5,\\\
+\max(3, 4, 6, 7)=7,\\\
+\max(4, 5, 7, 8)=8.\\
+$$
+池化窗口形状为$p \times q$的池化层称为$p \times q$池化层，池化操作称为$p \times q$池化。回到本节开头提到的对象边缘检测示例，现在我们将使用卷积层的输出作为$2\times 2$最大池化的输入。设置卷积层输入为`X`，池化层输出为`Y`。无论`X[i, j]`和`X[i, j + 1]`的值相同与否，或`X[i, j + 1]`和`X[i, j + 2]`的值相同与否，池化层始终输出`Y[i, j] = 1`。也就是说，使用$2\times 2$最大池化层，即使在高度或宽度上移动一个元素，卷积层仍然可以识别到模式。
+
+在下面的代码中的`pool2d`函数，实现池化层的前向传播。这类似于第2节中的`corr2d`函数。然而，这里没有卷积核，输出为输入中每个区域的最大值或平均值。
+
+```python
+import torch
+from torch import nn
+from d2l import torch as d2l
+
+def pool2d(X, pool_size, mode='max'):
+    p_h, p_w = pool_size
+    Y = torch.zeros((X.shape[0] - p_h + 1, X.shape[1] - p_w + 1))
+    for i in range(Y.shape[0]):
+        for j in range(Y.shape[1]):
+            if mode == 'max':
+                Y[i, j] = X[i: i + p_h, j: j + p_w].max()
+            elif mode == 'avg':
+                Y[i, j] = X[i: i + p_h, j: j + p_w].mean()
+    return Y
+```
+
+构建输入张量`X`，验证二维最大池化层的输出：
+
+```python
+X = torch.tensor([[0.0, 1.0, 2.0], [3.0, 4.0, 5.0], [6.0, 7.0, 8.0]])
+pool2d(X, (2, 2))
+output: tensor([[4., 5.],
+                [7., 8.]])
+```
+
+此外还可以验证平均池化层：
+
+```python
+pool2d(X, (2, 2), 'avg')
+output: tensor([[2., 3.],
+                [5., 6.]])
+```
+
+### 填充和步幅
+
+与卷积层一样，池化层也可以改变输出形状。和以前一样，我们可以通过填充和步幅以获得所需的输出形状。下面用深度学习框架中内置的二维最大池化层，来演示池化层中填充和步幅的使用。
+
+首先构造了一个输入张量`X`，它有四个维度，其中样本数和通道数都是1：
+
+```python
+X = torch.arange(16, dtype=torch.float32).reshape((1, 1, 4, 4))
+X
+output:
+tensor([[[[ 0.,  1.,  2.,  3.],
+          [ 4.,  5.,  6.,  7.],
+          [ 8.,  9., 10., 11.],
+          [12., 13., 14., 15.]]]])
+```
+
+默认情况下，深度学习框架中的步幅与池化窗口的大小相同。因此，如果我们使用形状为`(3, 3)`的池化窗口，那么默认情况下，我们得到的步幅形状为`(3, 3)`。
+
+```python
+pool2d = nn.MaxPool2d(3)
+pool2d(X)
+output: tensor([[[[10.]]]])
+```
+
+填充和步幅可以手动设定：
+
+```python
+pool2d = nn.MaxPool2d(3, padding=1, stride=2)
+pool2d(X)
+output: tensor([[[[ 5.,  7.],
+                  [13., 15.]]]])
+```
+
+当然，也可以设定一个任意大小的矩形池化窗口，并分别设定填充和步幅的高度和宽度：
+
+```python
+pool2d = nn.MaxPool2d((2, 3), stride=(2, 3), padding=(0, 1))
+pool2d(X)
+output: tensor([[[[ 5.,  7.],
+                  [13., 15.]]]])
+```
+
+### 多通道
+
+在处理多通道输入数据时，池化层在每个输入通道上单独运算，而不是像卷积层一样在通道上对输入进行汇总。这意味着池化层的输出通道数与输入通道数相同。下面，将在通道维度上连结张量`X`和`X + 1`，以构建具有2个通道的输入。
+
+```python
+X = torch.cat((X, X + 1), 1)
+X
+output:
+tensor([[[[ 0.,  1.,  2.,  3.],
+          [ 4.,  5.,  6.,  7.],
+          [ 8.,  9., 10., 11.],
+          [12., 13., 14., 15.]],
+
+         [[ 1.,  2.,  3.,  4.],
+          [ 5.,  6.,  7.,  8.],
+          [ 9., 10., 11., 12.],
+          [13., 14., 15., 16.]]]])
+```
+
+如下所示，汇聚后输出通道的数量仍然是2。
+
+```python
+pool2d = nn.MaxPool2d(3, padding=1, stride=2)
+pool2d(X)
+output: 
+tensor([[[[ 5.,  7.],
+          [13., 15.]],
+
+         [[ 6.,  8.],
+          [14., 16.]]]])
+```
+
+## 卷积神经网络(LeNet)
+
+### LeNet
+
+总体来看，LeNet（LeNet-5）由两个部分组成：
+
+- 卷积编码器：由两个卷积层组成
+
+- 全连接层密集块：由三个全连接层组成
+
+该架构如下图所示：
+
+![Figure 6-1 LeNet中的数据流](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/lenet.svg)
+
+每个卷积块中的基本单元是一个卷积层、一个sigmoid激活函数和平均池化层。请注意，虽然ReLU和最大池化层更有效，但它们在20世纪90年代还没有出现。每个卷积层使用$5\times 5$卷积核和一个sigmoid激活函数。这些层将输入映射到多个二维特征输出，通常同时增加通道的数量。第一卷积层有6个输出通道，而第二个卷积层有16个输出通道。每个$2\times2$池操作（步幅2）通过空间下采样将维数减少4倍。卷积的输出形状由批量大小、通道数、高度、宽度决定。
+
+为了将卷积块的输出传递给稠密块，我们必须在小批量中展平每个样本。换言之，我们将这个四维输入转换成全连接层所期望的二维输入。这里的二维表示的第一个维度是小批量的样本数，第二个维度给出每个样本的平面向量表示。LeNet的稠密块有三个全连接层，分别有120、84和10个输出。因为在执行分类任务，所以输出层的10维对应于最后输出结果的数量。
+
+通过下面的LeNet代码，可以看出用深度学习框架实现此类模型非常简单。我们只需要实例化一个`Sequential`块并将需要的层连接在一起。
+
+```python
+import torch
+from torch import nn
+from d2l import torch as d2l
+
+net = nn.Sequential(
+    nn.Conv2d(1, 6, kernel_size=5, padding=2), nn.Sigmoid(),
+    nn.AvgPool2d(kernel_size=2, stride=2),
+    nn.Conv2d(6, 16, kernel_size=5), nn.Sigmoid(),
+    nn.AvgPool2d(kernel_size=2, stride=2),
+    nn.Flatten(),
+    nn.Linear(16 * 5 * 5, 120), nn.Sigmoid(),
+    nn.Linear(120, 84), nn.Sigmoid(),
+    nn.Linear(84, 10))
+```
+
+我们对原始模型做了一点小改动，去掉了最后一层的高斯激活，网络其他部分与最初的LeNet-5一致。下面，我们将一个大小为$28 \times 28$的单通道（黑白）图像输入LeNet。通过在每一层打印输出的形状，我们可以检查模型，以确保其操作与我们期望的一致。
+
+![Figure 6-2 LeNet的简化版](https://zh-v2.d2l.ai/_images/lenet-vert.svg)
+
+```python
+X = torch.rand(size=(1, 1, 28, 28), dtype=torch.float32)
+for layer in net:
+    X = layer(X)
+    print(layer.__class__.__name__,'output shape: \t',X.shape)
+    
+output:
+Conv2d output shape: 	 torch.Size([1, 6, 28, 28])
+Sigmoid output shape: 	 torch.Size([1, 6, 28, 28])
+AvgPool2d output shape: 	 torch.Size([1, 6, 14, 14])
+Conv2d output shape: 	 torch.Size([1, 16, 10, 10])
+Sigmoid output shape: 	 torch.Size([1, 16, 10, 10])
+AvgPool2d output shape: 	 torch.Size([1, 16, 5, 5])
+Flatten output shape: 	 torch.Size([1, 400])
+Linear output shape: 	 torch.Size([1, 120])
+Sigmoid output shape: 	 torch.Size([1, 120])
+Linear output shape: 	 torch.Size([1, 84])
+Sigmoid output shape: 	 torch.Size([1, 84])
+Linear output shape: 	 torch.Size([1, 10])
+```
+
+请注意，在整个卷积块中，与上一层相比，每一层特征的高度和宽度都减小了。第一个卷积层使用2个像素的填充，来补偿$5 \times 5$卷积核导致的特征减少。相反，第二个卷积层没有填充，因此高度和宽度都减少了4个像素。随着层叠的上升，通道的数量从输入时的1个，增加到第一个卷积层之后的6个，再到第二个卷积层之后的16个。同时，每个池化层的高度和宽度都减半。最后，每个全连接层减少维数，最终输出一个维数与结果分类数相匹配的输出。
+
+### 模型训练
+
+现在已经实现了LeNet，让我们看看LeNet在Fashion-MNIST数据集上的表现。
+
+```python
+batch_size = 256
+train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)
+```
+
+虽然卷积神经网络的参数较少，但与深度的多层感知机相比，它们的计算成本仍然很高，因为每个参数都参与更多的乘法。通过使用GPU，可以用它加快训练。
+
+为了进行评估，我们需要对 [3.6节]中描述的`evaluate_accuracy`函数进行轻微的修改。由于完整的数据集位于内存中，因此在模型使用GPU计算数据集之前，我们需要将其复制到显存中。
+
+```python
+def evaluate_accuracy_gpu(net, data_iter, device=None):
+    """使用GPU计算模型在数据集上的精度"""
+    if isinstance(net, nn.Module):
+        net.eval()  # 设置为评估模式
+        if not device:
+            device = next(iter(net.parameters())).device
+    # 正确预测的数量，总预测的数量
+    metric = d2l.Accumulator(2)
+    with torch.no_grad():
+        for X, y in data_iter:
+            if isinstance(X, list):
+                # BERT微调所需的（之后将介绍）
+                X = [x.to(device) for x in X]
+            else:
+                X = X.to(device)
+            y = y.to(device)
+            metric.add(d2l.accuracy(net(X), y), y.numel())
+    return metric[0] / metric[1]
+```
+
+为了使用GPU，还需要一点小改动。与 [3.6节]中定义的`train_epoch_ch3`不同，在进行正向和反向传播之前，我们需要将每一小批量数据移动到我们指定的设备（例如GPU）上。
+
+如下所示，训练函数`train_ch6`也类似于 [3.6节]中定义的`train_ch3`。由于我们将实现多层神经网络，因此我们将主要使用高级API。以下训练函数假定从高级API创建的模型作为输入，并进行相应的优化。我们使用Xavier随机初始化模型参数。与全连接层一样，我们使用交叉熵损失函数和小批量随机梯度下降。
+
+```python
+def train_ch6(net, train_iter, test_iter, num_epochs, lr, device):
+    """用GPU训练模型(在第六章定义)"""
+    def init_weights(m):
+        if type(m) == nn.Linear or type(m) == nn.Conv2d:
+            nn.init.xavier_uniform_(m.weight)
+    net.apply(init_weights)
+    print('training on', device)
+    net.to(device)
+    optimizer = torch.optim.SGD(net.parameters(), lr=lr)
+    loss = nn.CrossEntropyLoss()
+    animator = d2l.Animator(xlabel='epoch', xlim=[1, num_epochs],
+                            legend=['train loss', 'train acc', 'test acc'])
+    timer, num_batches = d2l.Timer(), len(train_iter)
+    for epoch in range(num_epochs):
+        # 训练损失之和，训练准确率之和，样本数
+        metric = d2l.Accumulator(3)
+        net.train()
+        for i, (X, y) in enumerate(train_iter):
+            timer.start()
+            optimizer.zero_grad()
+            X, y = X.to(device), y.to(device)
+            y_hat = net(X)
+            l = loss(y_hat, y)
+            l.backward()
+            optimizer.step()
+            with torch.no_grad():
+                metric.add(l * X.shape[0], d2l.accuracy(y_hat, y), X.shape[0])
+            timer.stop()
+            train_l = metric[0] / metric[2]
+            train_acc = metric[1] / metric[2]
+            if (i + 1) % (num_batches // 5) == 0 or i == num_batches - 1:
+                animator.add(epoch + (i + 1) / num_batches,
+                             (train_l, train_acc, None))
+        test_acc = evaluate_accuracy_gpu(net, test_iter)
+        animator.add(epoch + 1, (None, None, test_acc))
+    print(f'loss {train_l:.3f}, train acc {train_acc:.3f}, '
+          f'test acc {test_acc:.3f}')
+    print(f'{metric[2] * num_epochs / timer.sum():.1f} examples/sec '
+          f'on {str(device)}')
+```
+
+下面训练和评估LeNet-5模型：
+
+```python
+lr, num_epochs = 0.9, 10
+train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
+
+output: 
+loss 0.466, train acc 0.824, test acc 0.800
+34835.7 examples/sec on cuda:0
+```
+
+![Figure 6-3 运行结果](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231103163251831.png)
 
 ---
 
