@@ -4,7 +4,31 @@
     <link>http://example.org/posts/</link>
     <description>所有文章 | jblj&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>7 现代卷积神经网络</title>
+  <link>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+  <pubDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+  <description><![CDATA[深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但]]></description>
+</item>
+<item>
+  <title>6 卷积神经网络</title>
+  <link>http://example.org/6-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+  <pubDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/6-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+  <description><![CDATA[从全连接层到卷积 卷积神经网络（convolutional neural networks，CNN）是机器学习利用自然图像中一些已知结构的创造性方法。 不变性 卷积神经网络正是将空间不变性（spatial invariance）的这一概念系统化，从而基于这个模型使用较少的参数来学习有用的表示。适合于计算机视觉的神经网络架]]></description>
+</item>
+<item>
+  <title>7 现代卷积神经网络</title>
+  <link>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+  <pubDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+  <description><![CDATA[深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但]]></description>
+</item>
+<item>
   <title>Bridge设计模式</title>
   <link>http://example.org/bridge/</link>
   <pubDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</pubDate>
@@ -75,14 +99,6 @@
   <author>jblj</author>
   <guid>http://example.org/5-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%A1%E7%AE%97/</guid>
   <description><![CDATA[层和块 事实证明，研究讨论“比单个层大”但“比整个模型小”的组件更有价值，由此引入了神经网络块的概念。块（block）可以描述单个层、由多个层组成的组件或整个模型本身。使用块进行抽象的一个好处是可以将一些块组合成更大的组件，这一过程通常是递归的，如下图所示。 通过定义代码来按需生成任意复杂度的块，可以通]]></description>
-</item>
-<item>
-  <title>4 多层感知机</title>
-  <link>http://example.org/4-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</link>
-  <pubDate>Sun, 29 Oct 2023 16:33:22 &#43;0800</pubDate>
-  <author>jblj</author>
-  <guid>http://example.org/4-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</guid>
-  <description><![CDATA[多层感知机 隐藏层 如果我们的标签通过仿射变换后确实与我们的输入数据相关，那么这种方法确实足够了。 但是，仿射变换中的线性是一个很强的假设。线性意味着单调假设： 任何特征的增大都会导致模型输出的增大（如果对应的权重为正）， 或者导致模型输出的减小（如果对应的权重为负）。对线性模型的依赖对应于一个隐含的假设， 即]]></description>
 </item>
 </channel>
 </rss>

@@ -4,7 +4,23 @@
     <link>http://example.org/tags/</link>
     <description>Tags - 标签 - jblj&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>d2l</title>
+  <link>http://example.org/tags/d2l/</link>
+  <pubDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/tags/d2l/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>pytorch</title>
+  <link>http://example.org/tags/pytorch/</link>
+  <pubDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/tags/pytorch/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>Java</title>
   <link>http://example.org/tags/java/</link>
   <pubDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</pubDate>
@@ -18,22 +34,6 @@
   <pubDate>Tue, 31 Oct 2023 16:21:00 &#43;0800</pubDate>
   <author>jblj</author>
   <guid>http://example.org/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>d2l</title>
-  <link>http://example.org/tags/d2l/</link>
-  <pubDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</pubDate>
-  <author>jblj</author>
-  <guid>http://example.org/tags/d2l/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>pytorch</title>
-  <link>http://example.org/tags/pytorch/</link>
-  <pubDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</pubDate>
-  <author>jblj</author>
-  <guid>http://example.org/tags/pytorch/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

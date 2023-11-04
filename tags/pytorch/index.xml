@@ -4,7 +4,15 @@
     <link>http://example.org/tags/pytorch/</link>
     <description>pytorch - 标签 - jblj&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>965774771@qq.com (jblj)</managingEditor>
-      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/pytorch/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>965774771@qq.com (jblj)</webMaster><lastBuildDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/pytorch/" rel="self" type="application/rss+xml" /><item>
+  <title>7 现代卷积神经网络</title>
+  <link>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+  <pubDate>Sat, 04 Nov 2023 14:10:00 &#43;0800</pubDate>
+  <author>jblj</author>
+  <guid>http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</guid>
+  <description><![CDATA[深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但]]></description>
+</item>
+<item>
   <title>6 卷积神经网络</title>
   <link>http://example.org/6-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
   <pubDate>Mon, 30 Oct 2023 12:21:00 &#43;0800</pubDate>
