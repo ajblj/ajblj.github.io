@@ -231,6 +231,228 @@ loss 0.196, train acc 0.927, test acc 0.916
 
 ![Figure 2-2 运行结果](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png)
 
+## 网络中的网络(NiN)
+
+LeNet、AlexNet和VGG都有一个共同的设计模式：通过一系列的卷积层与池化层来提取空间结构特征，然后通过全连接层对特征的表征进行处理。AlexNet和VGG对LeNet的改进主要在于如何扩大和加深这两个模块。或者，可以想象在这个过程的早期使用全连接层。然而，如果使用了全连接层，可能会完全放弃表征的空间结构。**网络中的网络**（**NiN**）提供了一个非常简单的解决方案：在每个像素的通道上分别使用多层感知机。
+
+### NiN块
+
+回想一下，卷积层的输入和输出由四维张量组成，张量的每个轴分别对应样本、通道、高度和宽度。另外，全连接层的输入和输出通常是分别对应于样本和特征的二维张量。NiN的想法是在每个像素位置（针对每个高度和宽度）应用一个全连接层。如果我们将权重连接到每个空间位置，我们可以将其视为$1\times 1$卷积层（如中6.4节所述），或作为在每个像素位置上独立作用的全连接层。从另一个角度看，即将空间维度中的每个像素视为单个样本，将通道维度视为不同特征（feature）。
+
+下图说明了VGG和NiN及它们的块之间主要架构差异。NiN块以一个普通卷积层开始，后面是两个$1 \times 1$的卷积层。这两个$1 \times 1$卷积层充当带有ReLU激活函数的逐像素全连接层。第一层的卷积窗口形状通常由用户设置。随后的卷积窗口形状固定为$1 \times 1$。
+
+![Figure 3-1 对比VGG和NiN及它们的块之间主要架构差异](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg)
+
+```python
+import torch
+from torch import nn
+from d2l import torch as d2l
+
+
+def nin_block(in_channels, out_channels, kernel_size, strides, padding):
+    return nn.Sequential(
+        nn.Conv2d(in_channels, out_channels, kernel_size, strides, padding),
+        nn.ReLU(),
+        nn.Conv2d(out_channels, out_channels, kernel_size=1), nn.ReLU(),
+        nn.Conv2d(out_channels, out_channels, kernel_size=1), nn.ReLU())
+```
+
+### NiN模型
+
+最初的NiN网络是在AlexNet后不久提出的，显然从中得到了一些启示。NiN使用窗口形状为$11\times 11$、$5\times 5$和$3\times 3$的卷积层，输出通道数量与AlexNet中的相同。每个NiN块后有一个最大池化层，池化窗口形状为$3\times 3$，步幅为2。
+
+NiN和AlexNet之间的一个显著区别是NiN完全取消了全连接层。相反，NiN使用一个NiN块，其输出通道数等于标签类别的数量。最后放一个**全局平均池化层**（global average pooling layer），它的高和宽等价于输入的高和宽，也就是生成了一个预测概率。NiN设计的一个优点是，它显著减少了模型所需参数的数量。然而，在实践中，这种设计有时会增加训练模型的时间。
+
+```python
+net = nn.Sequential(
+    nin_block(1, 96, kernel_size=11, strides=4, padding=0),
+    nn.MaxPool2d(3, stride=2),
+    nin_block(96, 256, kernel_size=5, strides=1, padding=1),
+    nn.MaxPool2d(3, stride=2),
+    nin_block(256, 384, kernel_size=3, strides=1, padding=1),
+    nn.MaxPool2d(3, stride=2),
+    nn.Dropout(0.5),
+    # 标签类别数是10
+    nin_block(384, 10, kernel_size=3, strides=1, padding=1),
+    nn.AdaptiveAvgPool2d((1, 1)),
+    # 将四维的输出转成二维的输出，其形状为(批量大小,10)
+    nn.Flatten())
+```
+
+创建一个数据样本来查看每个块的输出形状：
+
+```python
+X = torch.rand(size=(1, 1, 224, 224))
+for layer in net:
+    X = layer(X)
+    print(layer.__class__.__name__,'output shape:\t', X.shape)
+    
+output:
+Sequential output shape:	 torch.Size([1, 96, 54, 54])
+MaxPool2d output shape:	 torch.Size([1, 96, 26, 26])
+Sequential output shape:	 torch.Size([1, 256, 26, 26])
+MaxPool2d output shape:	 torch.Size([1, 256, 12, 12])
+Sequential output shape:	 torch.Size([1, 384, 12, 12])
+MaxPool2d output shape:	 torch.Size([1, 384, 5, 5])
+Dropout output shape:	 torch.Size([1, 384, 5, 5])
+Sequential output shape:	 torch.Size([1, 10, 5, 5])
+AdaptiveAvgPool2d output shape:	 torch.Size([1, 10, 1, 1])
+Flatten output shape:	 torch.Size([1, 10])
+```
+
+### 训练模型
+
+和以前一样，我们使用Fashion-MNIST来训练模型。训练NiN与训练AlexNet、VGG时相似：
+
+```python
+lr, num_epochs, batch_size = 0.1, 10, 128
+train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=224)
+d2l.train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
+output: 
+loss 0.362, train acc 0.865, test acc 0.865
+1022.8 examples/sec on cuda:0
+```
+
+![Figure 3-2 运行结果](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png)
+
+## 含并行连结的网络(GoogLeNet)
+
+GoogLeNet吸收了NiN中串联网络的思想，并在此基础上做了改进。这篇论文的一个重点是解决了什么样大小的卷积核最合适的问题。毕竟，以前流行的网络使用小到$1 \times 1$，大到$11 \times 11$的卷积核。论文的一个观点是，有时使用不同大小的卷积核组合是有利的。下面将介绍一个稍微简化的GoogLeNet版本：省略了一些为稳定训练而添加的特殊特性，现在有了更好的训练方法，这些特性不是必要的。
+
+### Inception块
+
+在GoogLeNet中，基本的卷积块被称为**Inception块**。
+
+![Figure 4-1 Inception块的架构](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg)
+
+如上图所示，Inception块由四条并行路径组成，前三条路径使用窗口大小为$1\times 1$、$3\times 3$和$5\times 5$的卷积层，从不同空间大小中提取信息。中间的两条路径在输入上执行$1\times 1$卷积，以减少通道数，从而降低模型的复杂性。第四条路径使用$3\times 3$最大池化层，然后使用$1\times 1$卷积层来改变通道数。这四条路径都使用合适的padding来使输入与输出的高和宽一致，最后将每条线路的输出在通道维度上连结，并构成Inception块的输出。在Inception块中，通常调整的超参数是每层输出通道数。
+
+```python
+import torch
+from torch import nn
+from torch.nn import functional as F
+from d2l import torch as d2l
+
+
+class Inception(nn.Module):
+    # c1--c4是每条路径的输出通道数
+    def __init__(self, in_channels, c1, c2, c3, c4, **kwargs):
+        super(Inception, self).__init__(**kwargs)
+        # 线路1，单1x1卷积层
+        self.p1_1 = nn.Conv2d(in_channels, c1, kernel_size=1)
+        # 线路2，1x1卷积层后接3x3卷积层
+        self.p2_1 = nn.Conv2d(in_channels, c2[0], kernel_size=1)
+        self.p2_2 = nn.Conv2d(c2[0], c2[1], kernel_size=3, padding=1)
+        # 线路3，1x1卷积层后接5x5卷积层
+        self.p3_1 = nn.Conv2d(in_channels, c3[0], kernel_size=1)
+        self.p3_2 = nn.Conv2d(c3[0], c3[1], kernel_size=5, padding=2)
+        # 线路4，3x3最大汇聚层后接1x1卷积层
+        self.p4_1 = nn.MaxPool2d(kernel_size=3, stride=1, padding=1)
+        self.p4_2 = nn.Conv2d(in_channels, c4, kernel_size=1)
+
+    def forward(self, x):
+        p1 = F.relu(self.p1_1(x))
+        p2 = F.relu(self.p2_2(F.relu(self.p2_1(x))))
+        p3 = F.relu(self.p3_2(F.relu(self.p3_1(x))))
+        p4 = F.relu(self.p4_2(self.p4_1(x)))
+        # 在通道维度上连结输出
+        return torch.cat((p1, p2, p3, p4), dim=1)
+```
+
+为什么GoogLeNet这个网络如此有效呢？ 首先我们考虑一下滤波器（filter）的组合，它们可以用各种滤波器尺寸探索图像，这意味着不同大小的滤波器可以有效地识别不同范围的图像细节。同时，我们可以为不同的滤波器分配不同数量的参数。
+
+### GoogLeNet模型
+
+如下图所示，GoogLeNet一共使用9个Inception块和全局平均池化层的堆叠来生成其估计值，Inception块之间的最大池化层可降低维度。第一个模块类似于AlexNet和LeNet，Inception块的组合从VGG继承，全局平均池化层避免了在最后使用全连接层。
+
+![Figure 4-2 GoogLeNet架构](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg)
+
+现在，我们逐一实现GoogLeNet的每个模块，第一个模块使用64个通道、$7\times 7$卷积层：
+
+```python
+b1 = nn.Sequential(nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3),
+                   nn.ReLU(),
+                   nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+第二个模块使用两个卷积层：第一个卷积层是64个通道、$1\times 1$卷积层；第二个卷积层使用将通道数量增加三倍的$3\times 3$卷积层。这对应于Inception块中的第二条路径。
+
+![Figure 4-3 GoogLeNet的模块1和2](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png)
+
+```python
+b2 = nn.Sequential(nn.Conv2d(64, 64, kernel_size=1),
+                   nn.ReLU(),
+                   nn.Conv2d(64, 192, kernel_size=3, padding=1),
+                   nn.ReLU(),
+                   nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+第三个模块串联两个完整的Inception块。第一个Inception块的输出通道数为$64+128+32+32=256$，四个路径之间的输出通道数量比为$64:128:32:32=2:4:1:1$，第2、3路径首先将输入通道的数量分别减少到$96/192=1/2$和$16/192=1/12$；第二个Inception块的输出通道数增加到$128+192+96+64=480$，四个路径之间的输出通道数量比为$128:192:96:64 = 4:6:3:2$，第2、3路径首先将输入通道的数量分别减少到$128/256=1/2$和$32/256=1/8$。
+
+![Figure 4-4 GoogLeNet的模块3](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png)
+
+```python
+b3 = nn.Sequential(Inception(192, 64, (96, 128), (16, 32), 32),
+                   Inception(256, 128, (128, 192), (32, 96), 64),
+                   nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+第四模块更加复杂，它串联了5个Inception块，其输出通道数分别是$192+208+48+64=512$、$160+224+64+64=512$、$128+256+64+64=512$、$112+288+64+64=528$和$256+320+128+128=832$。这些路径的通道数分配和第三模块中的类似，首先是Inception块中含$3×3$卷积层的第2条路径输出最多通道，其次是仅含$1×1$卷积层的第1条路径，之后是含$5×5$卷积层的第3条路径和含$3×3$最大汇聚层的第4条路径。其中第2、3条路径都会先按比例减小通道数。这些比例在各个Inception块中都略有不同。
+
+```python
+b4 = nn.Sequential(Inception(480, 192, (96, 208), (16, 48), 64),
+                   Inception(512, 160, (112, 224), (24, 64), 64),
+                   Inception(512, 128, (128, 256), (24, 64), 64),
+                   Inception(512, 112, (144, 288), (32, 64), 64),
+                   Inception(528, 256, (160, 320), (32, 128), 128),
+                   nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+第五模块包含输出通道数为$256+320+128+128=832$和$384+384+128+128=1024$的两个Inception块。其中每条路径通道数的分配思路和第三、第四模块中的一致，只是在具体数值上有所不同。需要注意的是，第五模块的后面紧跟输出层，该模块同NiN一样使用全局平均池化层，将每个通道的高和宽变成1。最后我们将输出变成二维数组，再接上一个输出个数为标签类别数的全连接层。
+
+![Figure 4-5 GoogLeNet的模块4和5](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png)
+
+```python
+b5 = nn.Sequential(Inception(832, 256, (160, 320), (32, 128), 128),
+                   Inception(832, 384, (192, 384), (48, 128), 128),
+                   nn.AdaptiveAvgPool2d((1,1)),
+                   nn.Flatten())
+
+net = nn.Sequential(b1, b2, b3, b4, b5, nn.Linear(1024, 10))
+```
+
+GoogLeNet模型计算复杂，而且不如VGG那样便于修改通道数。这里为了使Fashion-MNIST上的训练不那么复杂，我们将输入的高和宽从224降到96，这简化了计算。下面演示各个模块输出的形状变化：
+
+```python
+X = torch.rand(size=(1, 1, 96, 96))
+for layer in net:
+    X = layer(X)
+    print(layer.__class__.__name__,'output shape:\t', X.shape)
+
+output: 
+Sequential output shape:	 torch.Size([1, 64, 24, 24])
+Sequential output shape:	 torch.Size([1, 192, 12, 12])
+Sequential output shape:	 torch.Size([1, 480, 6, 6])
+Sequential output shape:	 torch.Size([1, 832, 3, 3])
+Sequential output shape:	 torch.Size([1, 1024])
+Linear output shape:	 torch.Size([1, 10])
+```
+
+### 训练模型
+
+和以前一样使用Fashion-MNIST数据集来训练模型，在训练之前，先将图片转换为$96 \times 96$分辨率。
+
+```python
+lr, num_epochs, batch_size = 0.1, 10, 128
+train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=96)
+d2l.train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
+output:
+loss 0.248, train acc 0.905, test acc 0.891
+1415.9 examples/sec on cuda:0
+```
+
+![Figure 4-6 运行结果](https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png)
+
 
 ---
 

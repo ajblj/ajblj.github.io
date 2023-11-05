@@ -9,14 +9,14 @@
 <meta name="author-link" content="https://github.com/ajblj/">
 <meta name="description" content="深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但" /><meta name="keywords" content='d2l, pytorch' /><meta itemprop="name" content="7 现代卷积神经网络">
 <meta itemprop="description" content="深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但"><meta itemprop="datePublished" content="2023-11-04T14:10:00+08:00" />
-<meta itemprop="dateModified" content="2023-11-04T17:32:00+08:00" />
-<meta itemprop="wordCount" content="3428"><meta itemprop="image" content="http://example.org/logo.png"/>
+<meta itemprop="dateModified" content="2023-11-05T18:37:00+08:00" />
+<meta itemprop="wordCount" content="7094"><meta itemprop="image" content="http://example.org/logo.png"/>
 <meta itemprop="keywords" content="d2l,pytorch," /><meta property="og:title" content="7 现代卷积神经网络" />
 <meta property="og:description" content="深度卷积神经网络(AlexNet) AlexNet AlexNet使用了8层卷积神经网络，和LeNet的架构非常相似，如下图所示。这里提供的是一个稍微精简版本的AlexNet，去除了当年需要两个小型GPU同时运算的设计特点。 Figure 1-1 从LeNet（左）到AlexNet（右） AlexNet和LeNet的设计理念非常相似，但" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" /><meta property="og:image" content="http://example.org/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-11-04T14:10:00+08:00" />
-<meta property="article:modified_time" content="2023-11-04T17:32:00+08:00" />
+<meta property="article:modified_time" content="2023-11-05T18:37:00+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="http://example.org/logo.png"/>
 
@@ -34,8 +34,8 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C\/"
-    },"genre": "posts","keywords": "d2l, pytorch","wordcount":  3428 ,
-    "url": "http:\/\/example.org\/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C\/","datePublished": "2023-11-04T14:10:00+08:00","dateModified": "2023-11-04T17:32:00+08:00","publisher": {
+    },"genre": "posts","keywords": "d2l, pytorch","wordcount":  7094 ,
+    "url": "http:\/\/example.org\/7-%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C\/","datePublished": "2023-11-04T14:10:00+08:00","dateModified": "2023-11-05T18:37:00+08:00","publisher": {
       "@type": "Organization",
       "name": "jblj","logo": "http:\/\/example.org\/images\/avatar.png"},"author": {
         "@type": "Person",
@@ -150,7 +150,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ajblj/" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="jblj" data-alt="jblj" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;jblj</a></span>
           <span class="post-category">收录于 <a href="/categories/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> 动手学深度学习</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-04 14:10:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-04">2023-11-04</time></span>&nbsp;<span title="更新于 2023-11-04 17:32:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-04">2023-11-04</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3428 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title="发布于 2023-11-04 14:10:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-04">2023-11-04</time></span>&nbsp;<span title="更新于 2023-11-05 18:37:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-05">2023-11-05</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7094 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 15 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -176,6 +176,20 @@
         <li><a href="#vgg块">VGG块</a></li>
         <li><a href="#vgg网络">VGG网络</a></li>
         <li><a href="#训练模型">训练模型</a></li>
+      </ul>
+    </li>
+    <li><a href="#网络中的网络nin">网络中的网络(NiN)</a>
+      <ul>
+        <li><a href="#nin块">NiN块</a></li>
+        <li><a href="#nin模型">NiN模型</a></li>
+        <li><a href="#训练模型-1">训练模型</a></li>
+      </ul>
+    </li>
+    <li><a href="#含并行连结的网络googlenet">含并行连结的网络(GoogLeNet)</a>
+      <ul>
+        <li><a href="#inception块">Inception块</a></li>
+        <li><a href="#googlenet模型">GoogLeNet模型</a></li>
+        <li><a href="#训练模型-2">训练模型</a></li>
       </ul>
     </li>
   </ul>
@@ -530,11 +544,354 @@
 </div><p>
 <figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png" data-sub-html="<h2> </h2><p>Figure 2-2 运行结果</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png 2x" sizes="auto" data-title="Figure 2-2 运行结果" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231104172909033.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 2-2 运行结果</figcaption>
     </figure></p>
+<h2 id="网络中的网络nin">网络中的网络(NiN)</h2>
+<p>LeNet、AlexNet和VGG都有一个共同的设计模式：通过一系列的卷积层与池化层来提取空间结构特征，然后通过全连接层对特征的表征进行处理。AlexNet和VGG对LeNet的改进主要在于如何扩大和加深这两个模块。或者，可以想象在这个过程的早期使用全连接层。然而，如果使用了全连接层，可能会完全放弃表征的空间结构。<strong>网络中的网络</strong>（<strong>NiN</strong>）提供了一个非常简单的解决方案：在每个像素的通道上分别使用多层感知机。</p>
+<h3 id="nin块">NiN块</h3>
+<p>回想一下，卷积层的输入和输出由四维张量组成，张量的每个轴分别对应样本、通道、高度和宽度。另外，全连接层的输入和输出通常是分别对应于样本和特征的二维张量。NiN的想法是在每个像素位置（针对每个高度和宽度）应用一个全连接层。如果我们将权重连接到每个空间位置，我们可以将其视为$1\times 1$卷积层（如中6.4节所述），或作为在每个像素位置上独立作用的全连接层。从另一个角度看，即将空间维度中的每个像素视为单个样本，将通道维度视为不同特征（feature）。</p>
+<p>下图说明了VGG和NiN及它们的块之间主要架构差异。NiN块以一个普通卷积层开始，后面是两个$1 \times 1$的卷积层。这两个$1 \times 1$卷积层充当带有ReLU激活函数的逐像素全连接层。第一层的卷积窗口形状通常由用户设置。随后的卷积窗口形状固定为$1 \times 1$。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg" data-sub-html="<h2> </h2><p>Figure 3-1 对比VGG和NiN及它们的块之间主要架构差异</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg 2x" sizes="auto" data-title="Figure 3-1 对比VGG和NiN及它们的块之间主要架构差异" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/nin.svg" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 3-1 对比VGG和NiN及它们的块之间主要架构差异</figcaption>
+    </figure></p>
+<div class="highlight" id="id-11"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">d2l</span> <span class="kn">import</span> <span class="n">torch</span> <span class="k">as</span> <span class="n">d2l</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">nin_block</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="nin模型">NiN模型</h3>
+<p>最初的NiN网络是在AlexNet后不久提出的，显然从中得到了一些启示。NiN使用窗口形状为$11\times 11$、$5\times 5$和$3\times 3$的卷积层，输出通道数量与AlexNet中的相同。每个NiN块后有一个最大池化层，池化窗口形状为$3\times 3$，步幅为2。</p>
+<p>NiN和AlexNet之间的一个显著区别是NiN完全取消了全连接层。相反，NiN使用一个NiN块，其输出通道数等于标签类别的数量。最后放一个<strong>全局平均池化层</strong>（global average pooling layer），它的高和宽等价于输入的高和宽，也就是生成了一个预测概率。NiN设计的一个优点是，它显著减少了模型所需参数的数量。然而，在实践中，这种设计有时会增加训练模型的时间。</p>
+<div class="highlight" id="id-12"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nin_block</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nin_block</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nin_block</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 标签类别数是10</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nin_block</span><span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 将四维的输出转成二维的输出，其形状为(批量大小,10)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建一个数据样本来查看每个块的输出形状：</p>
+<div class="highlight" id="id-13"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">net</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="s1">&#39;output shape:</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="n">output</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">54</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">MaxPool2d</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">MaxPool2d</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">MaxPool2d</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Dropout</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">AdaptiveAvgPool2d</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Flatten</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="训练模型-1">训练模型</h3>
+<p>和以前一样，我们使用Fashion-MNIST来训练模型。训练NiN与训练AlexNet、VGG时相似：</p>
+<div class="highlight" id="id-14"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">lr</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl"><span class="n">train_iter</span><span class="p">,</span> <span class="n">test_iter</span> <span class="o">=</span> <span class="n">d2l</span><span class="o">.</span><span class="n">load_data_fashion_mnist</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">resize</span><span class="o">=</span><span class="mi">224</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">d2l</span><span class="o">.</span><span class="n">train_ch6</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">d2l</span><span class="o">.</span><span class="n">try_gpu</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">output</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl"><span class="n">loss</span> <span class="mf">0.362</span><span class="p">,</span> <span class="n">train</span> <span class="n">acc</span> <span class="mf">0.865</span><span class="p">,</span> <span class="n">test</span> <span class="n">acc</span> <span class="mf">0.865</span>
+</span></span><span class="line"><span class="cl"><span class="mf">1022.8</span> <span class="n">examples</span><span class="o">/</span><span class="n">sec</span> <span class="n">on</span> <span class="n">cuda</span><span class="p">:</span><span class="mi">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png" data-sub-html="<h2> </h2><p>Figure 3-2 运行结果</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png 2x" sizes="auto" data-title="Figure 3-2 运行结果" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105120341887.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 3-2 运行结果</figcaption>
+    </figure></p>
+<h2 id="含并行连结的网络googlenet">含并行连结的网络(GoogLeNet)</h2>
+<p>GoogLeNet吸收了NiN中串联网络的思想，并在此基础上做了改进。这篇论文的一个重点是解决了什么样大小的卷积核最合适的问题。毕竟，以前流行的网络使用小到$1 \times 1$，大到$11 \times 11$的卷积核。论文的一个观点是，有时使用不同大小的卷积核组合是有利的。下面将介绍一个稍微简化的GoogLeNet版本：省略了一些为稳定训练而添加的特殊特性，现在有了更好的训练方法，这些特性不是必要的。</p>
+<h3 id="inception块">Inception块</h3>
+<p>在GoogLeNet中，基本的卷积块被称为<strong>Inception块</strong>。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg" data-sub-html="<h2> </h2><p>Figure 4-1 Inception块的架构</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg 2x" sizes="auto" data-title="Figure 4-1 Inception块的架构" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception.svg" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-1 Inception块的架构</figcaption>
+    </figure></p>
+<p>如上图所示，Inception块由四条并行路径组成，前三条路径使用窗口大小为$1\times 1$、$3\times 3$和$5\times 5$的卷积层，从不同空间大小中提取信息。中间的两条路径在输入上执行$1\times 1$卷积，以减少通道数，从而降低模型的复杂性。第四条路径使用$3\times 3$最大池化层，然后使用$1\times 1$卷积层来改变通道数。这四条路径都使用合适的padding来使输入与输出的高和宽一致，最后将每条线路的输出在通道维度上连结，并构成Inception块的输出。在Inception块中，通常调整的超参数是每层输出通道数。</p>
+<div class="highlight" id="id-15"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">functional</span> <span class="k">as</span> <span class="n">F</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">d2l</span> <span class="kn">import</span> <span class="n">torch</span> <span class="k">as</span> <span class="n">d2l</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Inception</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># c1--c4是每条路径的输出通道数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">(</span><span class="n">Inception</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 线路1，单1x1卷积层</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p1_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 线路2，1x1卷积层后接3x3卷积层</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p2_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p2_2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 线路3，1x1卷积层后接5x5卷积层</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p3_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">c3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p3_2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">c3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c3</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 线路4，3x3最大汇聚层后接1x1卷积层</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p4_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">p4_2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">c4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p1</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p1_1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p2</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p2_2</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p2_1</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p3</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p3_2</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p3_1</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p4</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p4_2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p4_1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 在通道维度上连结输出</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>为什么GoogLeNet这个网络如此有效呢？ 首先我们考虑一下滤波器（filter）的组合，它们可以用各种滤波器尺寸探索图像，这意味着不同大小的滤波器可以有效地识别不同范围的图像细节。同时，我们可以为不同的滤波器分配不同数量的参数。</p>
+<h3 id="googlenet模型">GoogLeNet模型</h3>
+<p>如下图所示，GoogLeNet一共使用9个Inception块和全局平均池化层的堆叠来生成其估计值，Inception块之间的最大池化层可降低维度。第一个模块类似于AlexNet和LeNet，Inception块的组合从VGG继承，全局平均池化层避免了在最后使用全连接层。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg" data-sub-html="<h2> </h2><p>Figure 4-2 GoogLeNet架构</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg 2x" sizes="auto" data-title="Figure 4-2 GoogLeNet架构" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/inception-full.svg" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-2 GoogLeNet架构</figcaption>
+    </figure></p>
+<p>现在，我们逐一实现GoogLeNet的每个模块，第一个模块使用64个通道、$7\times 7$卷积层：</p>
+<div class="highlight" id="id-16"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">b1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>第二个模块使用两个卷积层：第一个卷积层是64个通道、$1\times 1$卷积层；第二个卷积层使用将通道数量增加三倍的$3\times 3$卷积层。这对应于Inception块中的第二条路径。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png" data-sub-html="<h2> </h2><p>Figure 4-3 GoogLeNet的模块1和2</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png 2x" sizes="auto" data-title="Figure 4-3 GoogLeNet的模块1和2" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105181930141.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-3 GoogLeNet的模块1和2</figcaption>
+    </figure></p>
+<div class="highlight" id="id-17"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">b2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>第三个模块串联两个完整的Inception块。第一个Inception块的输出通道数为$64+128+32+32=256$，四个路径之间的输出通道数量比为$64:128:32:32=2:4:1:1$，第2、3路径首先将输入通道的数量分别减少到$96/192=1/2$和$16/192=1/12$；第二个Inception块的输出通道数增加到$128+192+96+64=480$，四个路径之间的输出通道数量比为$128:192:96:64 = 4:6:3:2$，第2、3路径首先将输入通道的数量分别减少到$128/256=1/2$和$32/256=1/8$。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png" data-sub-html="<h2> </h2><p>Figure 4-4 GoogLeNet的模块3</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png 2x" sizes="auto" data-title="Figure 4-4 GoogLeNet的模块3" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182109949.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-4 GoogLeNet的模块3</figcaption>
+    </figure></p>
+<div class="highlight" id="id-18"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">b3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">Inception</span><span class="p">(</span><span class="mi">192</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="mi">32</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">192</span><span class="p">),</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span> <span class="mi">64</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>第四模块更加复杂，它串联了5个Inception块，其输出通道数分别是$192+208+48+64=512$、$160+224+64+64=512$、$128+256+64+64=512$、$112+288+64+64=528$和$256+320+128+128=832$。这些路径的通道数分配和第三模块中的类似，首先是Inception块中含$3×3$卷积层的第2条路径输出最多通道，其次是仅含$1×1$卷积层的第1条路径，之后是含$5×5$卷积层的第3条路径和含$3×3$最大汇聚层的第4条路径。其中第2、3条路径都会先按比例减小通道数。这些比例在各个Inception块中都略有不同。</p>
+<div class="highlight" id="id-19"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">b4</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">Inception</span><span class="p">(</span><span class="mi">480</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">208</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">48</span><span class="p">),</span> <span class="mi">64</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="p">(</span><span class="mi">112</span><span class="p">,</span> <span class="mi">224</span><span class="p">),</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="mi">64</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="mi">64</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="p">(</span><span class="mi">144</span><span class="p">,</span> <span class="mi">288</span><span class="p">),</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="mi">64</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">528</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">320</span><span class="p">),</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="mi">128</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>第五模块包含输出通道数为$256+320+128+128=832$和$384+384+128+128=1024$的两个Inception块。其中每条路径通道数的分配思路和第三、第四模块中的一致，只是在具体数值上有所不同。需要注意的是，第五模块的后面紧跟输出层，该模块同NiN一样使用全局平均池化层，将每个通道的高和宽变成1。最后我们将输出变成二维数组，再接上一个输出个数为标签类别数的全连接层。</p>
+<p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png" data-sub-html="<h2> </h2><p>Figure 4-5 GoogLeNet的模块4和5</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png 2x" sizes="auto" data-title="Figure 4-5 GoogLeNet的模块4和5" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105182227202.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-5 GoogLeNet的模块4和5</figcaption>
+    </figure></p>
+<div class="highlight" id="id-20"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">b5</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">Inception</span><span class="p">(</span><span class="mi">832</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">320</span><span class="p">),</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="mi">128</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">Inception</span><span class="p">(</span><span class="mi">832</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="p">(</span><span class="mi">192</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span> <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="mi">128</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">b3</span><span class="p">,</span> <span class="n">b4</span><span class="p">,</span> <span class="n">b5</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>GoogLeNet模型计算复杂，而且不如VGG那样便于修改通道数。这里为了使Fashion-MNIST上的训练不那么复杂，我们将输入的高和宽从224降到96，这简化了计算。下面演示各个模块输出的形状变化：</p>
+<div class="highlight" id="id-21"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">96</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">net</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="s1">&#39;output shape:</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">output</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">24</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">832</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Sequential</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Linear</span> <span class="n">output</span> <span class="n">shape</span><span class="p">:</span>	 <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="训练模型-2">训练模型</h3>
+<p>和以前一样使用Fashion-MNIST数据集来训练模型，在训练之前，先将图片转换为$96 \times 96$分辨率。</p>
+<div class="highlight" id="id-22"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">lr</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">128</span>
+</span></span><span class="line"><span class="cl"><span class="n">train_iter</span><span class="p">,</span> <span class="n">test_iter</span> <span class="o">=</span> <span class="n">d2l</span><span class="o">.</span><span class="n">load_data_fashion_mnist</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">resize</span><span class="o">=</span><span class="mi">96</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">d2l</span><span class="o">.</span><span class="n">train_ch6</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">d2l</span><span class="o">.</span><span class="n">try_gpu</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">output</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">loss</span> <span class="mf">0.248</span><span class="p">,</span> <span class="n">train</span> <span class="n">acc</span> <span class="mf">0.905</span><span class="p">,</span> <span class="n">test</span> <span class="n">acc</span> <span class="mf">0.891</span>
+</span></span><span class="line"><span class="cl"><span class="mf">1415.9</span> <span class="n">examples</span><span class="o">/</span><span class="n">sec</span> <span class="n">on</span> <span class="n">cuda</span><span class="p">:</span><span class="mi">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>
+<figure><a class="lightgallery" href="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png" data-thumbnail="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png" data-sub-html="<h2> </h2><p>Figure 4-6 运行结果</p>"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png" srcset="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png 1.5x, https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png 2x" sizes="auto" data-title="Figure 4-6 运行结果" data-alt="https://cdn.jsdelivr.net/gh/ajblj/blogImage@main/d2l/image-20231105153732898.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></a><figcaption class="image-caption">Figure 4-6 运行结果</figcaption>
+    </figure></p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 2023-11-04 17:32:00">更新于 2023-11-04&nbsp;</span>
+        <span title="更新于 2023-11-05 18:37:00">更新于 2023-11-05&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
